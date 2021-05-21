@@ -1,5 +1,8 @@
 import business from '../business/business.container';
 import applicationException from '../service/applicationException';
+import admin from '../middleware/admin';
+import auth from '../middleware/auth';
+
 
 const userEndpoint = (router) => {
     router.get('/api/test', async (request, response, next) => {
@@ -27,7 +30,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.delete('/api/user/logout/:userId', async (request, response, next) => {
+    router.delete('/api/user/logout/:userId', auth,async (request, response, next) => {
         try {
             let result = await business.getUserManager(request).removeHashSession(request.body.userId);
             response.status(200).send(result);
